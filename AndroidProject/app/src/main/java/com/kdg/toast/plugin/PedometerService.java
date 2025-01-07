@@ -48,15 +48,13 @@ public class PedometerService extends Service implements SensorEventListener {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final NotificationChannel notificationChannel = new NotificationChannel(
-                    "PedometerLib",
-                    "Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
-            final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
+        final NotificationChannel notificationChannel = new NotificationChannel(
+                "PedometerLib",
+                "Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.createNotificationChannel(notificationChannel);
     }
 
     private void startNotification(){
@@ -72,7 +70,6 @@ public class PedometerService extends Service implements SensorEventListener {
                 .build();
         startForeground(112, notification);
     }
-
 
     @Override
     public void onCreate() {
