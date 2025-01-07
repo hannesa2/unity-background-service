@@ -102,7 +102,7 @@ public final class Bridge extends Application {
         myActivity.stopService(serviceIntent);
     }
 
-    public static int GetCurrentSteps() {
+    public static int getCurrentSteps() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Date currentDate = Calendar.getInstance().getTime();
@@ -116,7 +116,7 @@ public final class Bridge extends Application {
 
     public static String SyncData() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
-        int stepsToSend = GetCurrentSteps();
+        int stepsToSend = getCurrentSteps();
         String firstDate = sharedPreferences.getString(INIT_DATE, "");
         String lastDate = sharedPreferences.getString(DATE, "");
         String data = firstDate + '#' + lastDate + '#' + stepsToSend;
