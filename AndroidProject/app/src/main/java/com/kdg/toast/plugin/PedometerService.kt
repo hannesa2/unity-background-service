@@ -45,7 +45,7 @@ class PedometerService : Service(), SensorEventListener {
         val notificationIntent = Intent(this, Bridge.myActivity.javaClass)
         val pendingIntent = PendingIntent.getActivity(
             this,
-            0, notificationIntent, 0
+            0, notificationIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val notification = NotificationCompat.Builder(this, "PedometerLib")
             .setContentTitle("Background Walking Service")
