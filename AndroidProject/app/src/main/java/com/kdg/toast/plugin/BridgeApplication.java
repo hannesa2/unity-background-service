@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 
 import static android.Manifest.permission.ACTIVITY_RECOGNITION;
 
-public final class Bridge extends Application {
+public final class BridgeApplication extends Application {
     static int summarySteps;
     static int steps;
     static int initialSteps;
@@ -59,7 +59,7 @@ public final class Bridge extends Application {
         if (ContextCompat.checkSelfPermission(myActivity, Manifest.permission.ACTIVITY_RECOGNITION)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.i("PEDOMETER", "Permision isnt granted!");
-            ActivityCompat.requestPermissions(Bridge.myActivity,
+            ActivityCompat.requestPermissions(BridgeApplication.myActivity,
                     perms,
                     1);
         }
@@ -138,7 +138,7 @@ public final class Bridge extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Bridge.appContext = getApplicationContext();
+        BridgeApplication.appContext = getApplicationContext();
 
     }
 }

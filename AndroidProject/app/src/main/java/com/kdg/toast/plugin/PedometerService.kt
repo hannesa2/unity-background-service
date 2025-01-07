@@ -42,7 +42,7 @@ class PedometerService : Service(), SensorEventListener {
 
     private fun startNotification() {
         val input = "Counting your steps..."
-        val notificationIntent = Intent(this, Bridge.myActivity.javaClass)
+        val notificationIntent = Intent(this, BridgeApplication.myActivity.javaClass)
         val pendingIntent = PendingIntent.getActivity(
             this,
             0, notificationIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -57,15 +57,15 @@ class PedometerService : Service(), SensorEventListener {
     }
 
     override fun onCreate() {
-        Log.i(TAG, "onCreate: CREATED" + Bridge.steps)
+        Log.i(TAG, "onCreate: CREATED" + BridgeApplication.steps)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         loadData()
-        saveSummarySteps(Bridge.summarySteps + Bridge.steps)
+        saveSummarySteps(BridgeApplication.summarySteps + BridgeApplication.steps)
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
         super.onTaskRemoved(rootIntent)
-        Log.i(TAG, "onTaskRemoved: REMOVED" + Bridge.steps)
+        Log.i(TAG, "onTaskRemoved: REMOVED" + BridgeApplication.steps)
         initSensorManager()
     }
 
@@ -74,11 +74,11 @@ class PedometerService : Service(), SensorEventListener {
         createNotificationChannel()
         startNotification()
         super.onCreate()
-        Bridge.initialSteps = 0
+        BridgeApplication.initialSteps = 0
         initSensorManager()
         val editor = sharedPreferences!!.edit()
         initialDate = Calendar.getInstance().time
-        editor.putString(Bridge.INIT_DATE, currentDate.toString())
+        editor.putString(BridgeApplication.INIT_DATE, currentDate.toString())
         editor.apply()
         return START_NOT_STICKY
     }
@@ -88,19 +88,19 @@ class PedometerService : Service(), SensorEventListener {
         Log.i(TAG, "onDestroy: DESTROYED")
         disposeSensorManager()
         loadData()
-        saveSummarySteps(Bridge.summarySteps + Bridge.steps)
+        saveSummarySteps(BridgeApplication.summarySteps + BridgeApplication.steps)
     }
 
     override fun onSensorChanged(sensorEvent: SensorEvent) {
         Log.i(TAG, "onSensorChanged!!!!!!: " + sensorEvent.values[0])
-        if (Bridge.initialSteps == 0) {
+        if (BridgeApplication.initialSteps == 0) {
             Log.i(TAG, "onSensorChanged: AWAKE")
-            Bridge.initialSteps = sensorEvent.values[0].toInt()
+            BridgeApplication.initialSteps = sensorEvent.values[0].toInt()
         }
         if (running) {
-            Bridge.steps = sensorEvent.values[0].toInt() - Bridge.initialSteps
-            Log.i(TAG, "onSensorChanged: current steps: " + Bridge.steps)
-            saveData(Bridge.steps)
+            BridgeApplication.steps = sensorEvent.values[0].toInt() - BridgeApplication.initialSteps
+            Log.i(TAG, "onSensorChanged: current steps: " + BridgeApplication.steps)
+            saveData(BridgeApplication.steps)
         }
     }
 
@@ -113,7 +113,7 @@ class PedometerService : Service(), SensorEventListener {
         if (countSensor != null) {
             sensorManager!!.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI)
         } else {
-            Toast.makeText(Bridge.myActivity, "Sensor Not Found (", Toast.LENGTH_LONG).show()
+            Toast.makeText(BridgeApplication.myActivity, "Sensor Not Found (", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -125,25 +125,25 @@ class PedometerService : Service(), SensorEventListener {
     fun saveData(currentSteps: Int) {
         val editor = sharedPreferences!!.edit()
         currentDate = Calendar.getInstance().time
-        editor.putString(Bridge.DATE, currentDate.toString())
+        editor.putString(BridgeApplication.DATE, currentDate.toString())
         Log.i(TAG, "saveData: saved! $currentSteps")
-        editor.putInt(Bridge.STEPS, currentSteps)
+        editor.putInt(BridgeApplication.STEPS, currentSteps)
         editor.apply()
     }
 
     fun saveSummarySteps(stepsToSave: Int) {
         val editor = sharedPreferences!!.edit()
         currentDate = Calendar.getInstance().time
-        editor.putString(Bridge.DATE, currentDate.toString())
+        editor.putString(BridgeApplication.DATE, currentDate.toString())
         Log.i(TAG, "saveSummarySteps: saved! $stepsToSave")
         editor.putInt("summarySteps", stepsToSave)
         editor.apply()
     }
 
     fun loadData() {
-        Bridge.steps = sharedPreferences!!.getInt(Bridge.STEPS, 0)
-        Bridge.summarySteps = sharedPreferences!!.getInt("summarySteps", 0)
-        Log.i(TAG, "loadData: steps" + Bridge.steps)
-        Log.i(TAG, "loadData: summarySteps " + Bridge.summarySteps)
+        BridgeApplication.steps = sharedPreferences!!.getInt(BridgeApplication.STEPS, 0)
+        BridgeApplication.summarySteps = sharedPreferences!!.getInt("summarySteps", 0)
+        Log.i(TAG, "loadData: steps" + BridgeApplication.steps)
+        Log.i(TAG, "loadData: summarySteps " + BridgeApplication.summarySteps)
     }
 }
