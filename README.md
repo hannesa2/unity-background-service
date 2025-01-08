@@ -48,7 +48,7 @@ public void SyncData()
 
  ---
  ### [Android](https://github.com/nintendaii/unity-background-service/tree/master/AndroidProject)
- The entry point of the Android application is the [`Bridge`](https://github.com/nintendaii/unity-background-service/blob/master/AndroidProject/app/src/main/java/com/kdg/toast/plugin/Bridge.java) class. Explanation of the methods:
+ The entry point of the Android application is the [`BridgeApplication`](https://github.com/nintendaii/unity-background-service/blob/master/AndroidProject/app/src/main/java/com/kdg/toast/plugin/BridgeApplication.java) class. Explanation of the methods:
  1. The `receiveActivityInstance` method is called when the `SendActivityReference` from Unity executes. It takes the Unity activity to know where to start the background service in the future. Also it checks if the permission for activity recognition is granted and asks for the permission if it is not (this logic is implemented for Android API 28 and above).
 ```java
 public static void receiveActivityInstance(Activity tempActivity) {

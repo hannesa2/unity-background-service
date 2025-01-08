@@ -1,0 +1,32 @@
+name: PullRequest
+
+on: [ pull_request ]
+
+jobs:
+  buildTest:
+    name: Build & Test
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: AndroidProject
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macOS-14 ]
+        java_version: [ 17 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.java_version }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: "adopt"
+          java-version: ${{ matrix.java_version }}
+      - uses: gradle/wrapper-validation-action@v3
+      - name: Install Android SDK
+        uses: hannesa2/action-android/install-sdk@0.1.16.7
+      - name: Build project
+        run: ./gradlew assembleDebug
